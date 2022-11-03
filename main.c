@@ -10,7 +10,7 @@ typedef struct node node;
 
 node *multiplicandk = NULL;
 node *multiplierk = NULL;
-//node *result = NULL;
+node *result = NULL;
 int base = 0;
 
 void addNodeToEnd(int, node**);
@@ -60,12 +60,48 @@ int main() {
     //Closes input
     fclose(input);
 
+    //Adds values to result (DELETE THIS BEFORE SUBMISSION)
+    int k = 1;
+    for (k;k<7;k++){
+        addNodeToEnd(k,&result);
+    }
+
     //Prints lists
     printList(multiplicandk);
     printf("\n");
     printList(multiplierk);
     printf("\n");
+    printList(result);
+    printf("\n");
     printf("%d",base);
+
+    //Opens output
+    FILE* output;
+    output = fopen("C:\\Users\\admin\\Desktop\\ds_project\\output.txt", "w");
+
+    //Prints multiplicand
+    node *temp = multiplicandk;
+    while (temp != NULL){
+        fprintf(output, "%d", temp->value);
+        temp = temp->nextNode;
+    }
+    fputc('\n',output);
+
+    //Prints multiplierk
+    temp = multiplierk;
+    while (temp != NULL){
+        fprintf(output, "%d", temp->value);
+        temp = temp->nextNode;
+    }
+    fputc('\n',output);
+
+    //Prints result
+    temp = result;
+    while (temp != NULL){
+        fprintf(output, "%d", temp->value);
+        temp = temp->nextNode;
+    }
+    fputc('\n',output);
 
     return 0;
 }
