@@ -1,53 +1,72 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 struct node {
     int value;
     struct node *nextNode;
 };
+
 typedef struct node node;
-node *headNode;
-node *headNode1;
 
+node *multiplicandk = NULL;
+node *multiplierk = NULL;
+//node *result = NULL;
+int base = 0;
 
-void removeNode(int);
-void addNodeAfter(int,int);
-void addNodeToBeginning(int);
-void addNodeToEnd(int);
+void addNodeToEnd(int, node**);
 void printList(node*);
 
 int main() {
-    //Opens file
-    FILE* file;
-    file = fopen("C:\\Users\\admin\\Desktop\\ds_project\\num.txt", "r");
+    //Opens input
+    FILE* input;
+    input = fopen("C:\\Users\\admin\\Desktop\\ds_project\\input.txt", "r");
 
-    //Check if file is empty
-    if (file == NULL) {
-        printf("file can't be opened \n");
+    //Check if input is empty
+    if (input == NULL) {
+        printf("input can't be opened \n");
     }
 
-    //Reads ints
+    //Reads multiplicand
     char ch;
     int num;
     do {
-        ch = fgetc(file);
-        printf("%c",ch);
+        ch = fgetc(input);
 
         num = ch - '0';
-        if (num != -38){
-            addNodeToEnd(num);
+        if (num >= 0){
+            addNodeToEnd(num,&multiplicandk);
 
         }
     } while (!(ch == EOF || ch == '\n' || ch == ' '));
 
+    //Reads multiplier
+    do {
+        ch = fgetc(input);
 
+        num = ch - '0';
+        if (num >= 0){
+            addNodeToEnd(num,&multiplierk);
 
-    //Closes file
-    fclose(file);
+        }
+    } while (!(ch == EOF || ch == '\n' || ch == ' '));
 
-    //Prints list
-    printList(headNode);
+    //Reads base
+    ch = fgetc(input);
+    base = ch - '0';
+    if (base == 1){
+        base = 10;
+    }
+
+    //Closes input
+    fclose(input);
+
+    //Prints lists
+    printList(multiplicandk);
+    printf("\n");
+    printList(multiplierk);
+    printf("\n");
+    printf("%d",base);
+
     return 0;
 }
 
@@ -62,11 +81,12 @@ void printList(node *head){
         printf("%d",tempNode->value);
 
     } else {
+        printf("List is empty\n");
         return;
     }
 }
 
-void addNodeToEnd(int val){
+void addNodeToEnd(int val,node** head){
     //Creates new node
     node *newNode;
     newNode = (node*)malloc(sizeof(node));
@@ -74,45 +94,16 @@ void addNodeToEnd(int val){
     newNode->nextNode = NULL;
 
     //Checks if list is empty
-    if (headNode == NULL){
+    if (*head == NULL){
         //if empty makes node head node
-        headNode = newNode;
+        *head = newNode;
 
     } else {
         //Searches for last node
-        node *temp = headNode;
+        node *temp = *head;
         while (temp->nextNode != NULL){
             temp = temp->nextNode;
         }
         temp->nextNode = newNode;
     }
-}
-
-void addNodeToBeginning(int val){
-    //Creates node
-    node *newNode;
-    newNode = (node*) malloc(sizeof (node));
-    newNode->value = val;
-
-    //Checks if list is empty
-    if (headNode == NULL){
-        headNode = newNode;
-    } else {
-        newNode->nextNode = headNode;
-        headNode = newNode;
-    }
-}
-
-void addNodeAfter(int valB, int valA){
-    //Creates new node
-    node *newNode;
-    newNode = (node*) malloc(sizeof (node));
-    newNode->value = valA;
-
-    //Checks if list is empty
-    if (headNode == NULL) {
-        return;
-    }
-    node *temp = headNode;
-    node *temp2;
 }
